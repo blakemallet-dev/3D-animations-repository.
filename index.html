@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Models</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin:0; font-family: system-ui, sans-serif; background:#101410; color:#e8f0e6;
+         display:flex; flex-direction:column; align-items:center; min-height:100vh; }
+  h1 { font-weight:600; font-size:1.4rem; margin:1.6rem 0 .3rem; letter-spacing:.01em; }
+  p.sub { margin:0 0 1rem; color:#9db097; font-size:.9rem; }
+  .stage { width:min(900px,100%); flex:1; }
+  model-viewer { width:100%; height:min(72vh,640px); background:transparent; }
+  .row { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; padding:1rem; }
+  button { font:inherit; padding:.55rem 1rem; border-radius:8px; border:1px solid #2f3a2c;
+           background:#182016; color:#e8f0e6; cursor:pointer; }
+  button[aria-pressed="true"] { background:#2f8f3e; border-color:#2f8f3e; color:#fff; }
+</style>
+</head>
+<body>
+  <h1>3D Models</h1>
+  <p class="sub">Drag to rotate &middot; scroll to zoom</p>
+  <div class="stage">
+    <model-viewer id="mv" alt="3D model" camera-controls auto-rotate
+      auto-rotate-delay="800" shadow-intensity="0.9" exposure="1.05"
+      src="topiary-logo-leafy-web.glb"></model-viewer>
+  </div>
+  <div class="row" id="row"></div>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-umd.min.js"></script>
+  <script>
+    const models = [
+      ["Topiary logo", "topiary-logo-leafy-web.glb"],
+      ["Green flowers", "green-logo-flowers-web.glb"],
+      ["Floral letter", "floral-letter-web.glb"],
+    ];
+    const mv = document.getElementById("mv"), row = document.getElementById("row");
+    models.forEach(([label, src], i) => {
+      const b = document.createElement("button");
+      b.textContent = label;
+      b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+      b.onclick = () => {
+        mv.src = src;
+        [...row.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+      };
+      row.appendChild(b);
+    });
+  </script>
+</body>
+</html>
